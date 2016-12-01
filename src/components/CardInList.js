@@ -22,7 +22,7 @@ const CardInList = React.createClass({
     let props = this.props;
     let status = props.card.status < 2 ? props.card.status : 0;
     return (<tr>
-      <td className="number"><Link className="btn" to={`/card/${props.card.id}`}> {props.card.number} </Link></td>
+      <td className="number"><Link className="btn" to={`/card/${props.card.id}`}> {this.formatNumberCard(props.card.number)} </Link></td>
       <td className="exp"> {props.card.exp_date} </td>
       <td className="status">
         {ListStatus[status][1]}
@@ -37,7 +37,7 @@ const CardInList = React.createClass({
   DeleteCard(ev) {
     this.refs.dialog.show({
       title: 'Remove Card?',
-      body: 'Are you sure that you would like to remove the Card: ' + this.props.card.number,
+      body: 'Are you sure that you would like to remove the Card: ' + this.formatNumberCard(props.card.number),
       actions: [
         Dialog.CancelAction(() => {
           console.log('Cancel was clicked!');
@@ -50,6 +50,9 @@ const CardInList = React.createClass({
       bsSize: 'small',
       primaryClassName: 'btn-success'
     });
+  },
+  formatNumberCard( number ) {
+    return number.toString().replace(/(\d{4})/g, '$1 ').trim();
   }
 });
 

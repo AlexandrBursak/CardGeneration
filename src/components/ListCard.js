@@ -3,16 +3,18 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { autoAddCard } from '../action';
-
+import { filterByCardNumber } from '../action';
+import fuzzysearch from 'fuzzysearch'
 import CardInList from './CardInList';
 
-const mapStateToProps = ({ cards }) => ({
-  cards
+const matches = ( filter, card ) => fuzzysearch(filter, card.number);
+
+const mapStateToProps = ({ cards, cardFilter }) => ({
+  cards: cards.filter(c => matches(cardFilter, c))
 });
 
 const mapDispatchToProps = dispatch => ({
-  autoAddCard: () => dispatch(autoAddCard()),
+  onFilter: query => dispatch(filterByCardNumber(query))
 });
 
 const Cards = data => {
@@ -21,15 +23,17 @@ const Cards = data => {
   </tbody>);
 };
 
-const ListCard = ({ cards, autoAddCard }) => {
-  return (<div className="jumbotron">
+const ListCard = ({ cards, onFilter }) => {
+  return (<div className="jumbotron row">
       <div className="list-card">
-        <button className="btn btn-primary pull-right" onClick={autoAddCard}> Auto generate Card </button>
+        <div className=" pull-right">
+          <input className="search" type="search" placeholder="Filter By Number..." onChange={e => onFilter(e.target.value)} />
+        </div>
         <h2>List Card</h2>
         <table className="table">
           <thead>
             <tr>
-              <th> Number </th>
+              <th> <button className="btn btn-primary"> Number </button> </th>
               <th> Exp </th>
               <th> Status </th>
               <th> Action </th>
