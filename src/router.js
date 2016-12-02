@@ -12,15 +12,13 @@ import Routes from './routes';
 import * as reducers from './reducers';
 reducers.routing = routerReducer;
 
-let storage = JSON.parse(Lockr.get('state') || '[]');
-const store = createStore(combineReducers(reducers), { 'cards': storage }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+let { cards, cardFilter, orderCard } = JSON.parse(Lockr.get('save') || '[]');
+const store = createStore(combineReducers(reducers), { cards, cardFilter, orderCard }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 const history = syncHistoryWithStore(browserHistory, store);
 
 function init() {
   let state = store.getState();
-  Lockr.set('state', JSON.stringify(state.cards));
-  console.log(state);
-
+  Lockr.set('save', JSON.stringify( { cards: state.cards, cardFilter: state.cardFilter, orderCard: state.orderCard } ));
   ReactDOM.render(<Provider store={store}>
     <Router history={history}>
       {Routes}

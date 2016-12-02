@@ -3,7 +3,7 @@
  */
 
 export const cardFilter = ( state, action ) => {
-  // console.log(action);
+  console.log('red card filter');
   switch (action.type) {
     case 'FILTER_CARDS':
       return action.data;
@@ -12,7 +12,19 @@ export const cardFilter = ( state, action ) => {
   }
 };
 
+export const orderCard = ( state, action ) => {
+  console.log(action);
+  console.log('red order card');
+  switch (action.type) {
+    case 'ORDER_CARDS_BY_NUMBER':
+      return action.data;
+    default:
+      return state || '';
+  }
+};
+
 export const cards = ( state, action ) => {
+  console.log('red cards');
   let newCard = {};
   let max = Math.pow( 10, 16 );
   let min = Math.pow( 10, 15 );

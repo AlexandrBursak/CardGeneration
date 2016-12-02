@@ -62364,6 +62364,10 @@ var filterByCardNumber = exports.filterByCardNumber = function filterByCardNumbe
   return { type: 'FILTER_CARDS', data: query };
 };
 
+var orderCardsByNumber = exports.orderCardsByNumber = function orderCardsByNumber(orderBy) {
+  return { type: 'ORDER_CARDS_BY_NUMBER', data: orderBy };
+};
+
 },{}],528:[function(require,module,exports){
 'use strict';
 
@@ -62582,13 +62586,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Created by bursak on 11/28/16.
  */
-var mapStateToProps = function mapStateToProps(_ref) {
-  var cards = _ref.cards;
-  return {
-    cards: cards
-  };
-};
-
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     deleteCard: function deleteCard(cardId) {
@@ -62601,6 +62598,7 @@ var CardInList = _react2.default.createClass({
   displayName: 'CardInList',
   render: function render() {
     var props = this.props;
+    console.log(props);
     var status = props.card.status < 2 ? props.card.status : 0;
     return _react2.default.createElement(
       'tr',
@@ -62610,7 +62608,7 @@ var CardInList = _react2.default.createClass({
         { className: 'number' },
         _react2.default.createElement(
           _reactRouter.Link,
-          { className: 'btn', to: '/card/' + props.card.id },
+          { to: '/card/' + props.card.id },
           ' ',
           this.formatNumberCard(props.card.number),
           ' '
@@ -62633,12 +62631,12 @@ var CardInList = _react2.default.createClass({
         null,
         _react2.default.createElement(
           _reactRouter.Link,
-          { className: 'btn btn-default btn-sm', to: '/card/' + props.card.id + '/edit' },
+          { className: 'btn btn-default btn-xs', to: '/card/' + props.card.id + '/edit' },
           ' Edit '
         ),
         _react2.default.createElement(
           'button',
-          { className: 'btn btn-danger btn-sm', ref: 'delete', onClick: this.DeleteCard },
+          { className: 'btn btn-danger btn-xs', ref: 'delete', onClick: this.DeleteCard },
           ' Delete '
         ),
         _react2.default.createElement(_reactBootstrapDialog2.default, { ref: 'dialog' })
@@ -62646,8 +62644,7 @@ var CardInList = _react2.default.createClass({
     );
   },
   DeleteCard: function DeleteCard(ev) {
-    var _this = this;
-
+    var props = this.props;
     this.refs.dialog.show({
       title: 'Remove Card?',
       body: 'Are you sure that you would like to remove the Card: ' + this.formatNumberCard(props.card.number),
@@ -62655,7 +62652,7 @@ var CardInList = _react2.default.createClass({
         console.log('Cancel was clicked!');
       }), _reactBootstrapDialog2.default.OKAction(function () {
         console.log('OK was clicked!');
-        _this.props.deleteCard(_this.props.card.id);
+        props.deleteCard(props.cardId);
       })],
       bsSize: 'small',
       primaryClassName: 'btn-success'
@@ -62666,7 +62663,7 @@ var CardInList = _react2.default.createClass({
   }
 });
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CardInList);
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(CardInList);
 
 },{"../action":527,"./ListStatus":535,"react":511,"react-bootstrap-dialog":198,"react-redux":444,"react-router":480}],531:[function(require,module,exports){
 'use strict';
@@ -62852,14 +62849,28 @@ var matches = function matches(filter, card) {
     * Created by bursak on 11/25/16.
     */
 
+var sortByNumber = function sortByNumber(a, b, sortType) {
+  // console.log(this);
+  // console.log(sortType);
+  // return this;
+  a = a.number.replace(/([\s-_]+)/g, '');
+  b = b.number.replace(/([\s-_]+)/g, '');
+  return 'ASC' == sortType ? a - b : b - a;
+};
+var sortByType = ['', 'ASC', 'DESC'];
 
 var mapStateToProps = function mapStateToProps(_ref) {
   var cards = _ref.cards,
-      cardFilter = _ref.cardFilter;
+      cardFilter = _ref.cardFilter,
+      orderCard = _ref.orderCard;
   return {
     cards: cards.filter(function (c) {
       return matches(cardFilter, c);
-    })
+    }).sort(function (a, b) {
+      return orderCard ? sortByNumber(a, b, orderCard) : 0;
+    }),
+    cardFilter: cardFilter,
+    orderCard: orderCard
   };
 };
 
@@ -62867,6 +62878,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     onFilter: function onFilter(query) {
       return dispatch((0, _action.filterByCardNumber)(query));
+    },
+    onOrder: function onOrder(order) {
+      return dispatch((0, _action.orderCardsByNumber)(order));
     }
   };
 };
@@ -62876,87 +62890,103 @@ var Cards = function Cards(data) {
     'tbody',
     null,
     data.cards.map(function (card) {
-      return _react2.default.createElement(_CardInList2.default, { card: card, key: card.id });
+      return _react2.default.createElement(_CardInList2.default, { card: card, cardId: card.id, key: card.id });
     })
   );
 };
 
-var ListCard = function ListCard(_ref2) {
-  var cards = _ref2.cards,
-      onFilter = _ref2.onFilter;
-
-  return _react2.default.createElement(
-    'div',
-    { className: 'jumbotron row' },
-    _react2.default.createElement(
+var ListCard = _react2.default.createClass({
+  displayName: 'ListCard',
+  render: function render() {
+    var props = this.props;
+    console.log(props);
+    var orderCard = props.orderCard.length ? props.orderCard == 'ASC' ? _react2.default.createElement('span', { className: 'glyphicon glyphicon-arrow-up' }) : _react2.default.createElement('span', { className: 'glyphicon glyphicon-arrow-down' }) : '';
+    var getNextOrderBy = function getNextOrderBy(current, allList) {
+      var result = allList.indexOf(current) + 1 < allList.length ? allList[allList.indexOf(current) + 1] : allList[0];
+      return result;
+    };
+    return _react2.default.createElement(
       'div',
-      { className: 'list-card' },
+      { className: 'jumbotron row' },
       _react2.default.createElement(
         'div',
-        { className: ' pull-right' },
-        _react2.default.createElement('input', { className: 'search', type: 'search', placeholder: 'Filter By Number...', onChange: function onChange(e) {
-            return onFilter(e.target.value);
-          } })
-      ),
-      _react2.default.createElement(
-        'h2',
-        null,
-        'List Card'
-      ),
-      _react2.default.createElement(
-        'table',
-        { className: 'table' },
+        { className: 'list-card' },
         _react2.default.createElement(
-          'thead',
-          null,
-          _react2.default.createElement(
-            'tr',
-            null,
-            _react2.default.createElement(
-              'th',
-              null,
-              ' ',
-              _react2.default.createElement(
-                'button',
-                { className: 'btn btn-primary' },
-                ' Number '
-              ),
-              ' '
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              ' Exp '
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              ' Status '
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              ' Action '
-            )
-          )
+          'div',
+          { className: 'pull-right' },
+          _react2.default.createElement('input', {
+            className: 'search',
+            type: 'search',
+            placeholder: 'Filter By Number...',
+            defaultValue: props.cardFilter,
+            onChange: function onChange(e) {
+              return props.onFilter(e.target.value);
+            } })
         ),
-        cards.length === 0 ? _react2.default.createElement(
-          'tbody',
+        _react2.default.createElement(
+          'h2',
           null,
+          'List Card'
+        ),
+        _react2.default.createElement(
+          'table',
+          { className: 'table' },
           _react2.default.createElement(
-            'tr',
+            'thead',
             null,
             _react2.default.createElement(
-              'td',
-              { cols: '4' },
-              ' Nothing to find '
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                null,
+                ' ',
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn btn-sm', onClick: function onClick() {
+                      return props.onOrder(getNextOrderBy(props.orderCard, sortByType));
+                    } },
+                  ' Number ',
+                  orderCard,
+                  ' '
+                ),
+                ' '
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                ' Exp '
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                ' Status '
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                ' Action '
+              )
             )
-          )
-        ) : _react2.default.createElement(Cards, { cards: cards })
+          ),
+          props.cards.length === 0 ? _react2.default.createElement(
+            'tbody',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'td',
+                { cols: '4' },
+                ' Nothing to find '
+              )
+            )
+          ) : _react2.default.createElement(Cards, { cards: props.cards })
+        )
       )
-    )
-  );
-};
+    );
+  }
+});
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ListCard);
 
@@ -63075,7 +63105,7 @@ Object.defineProperty(exports, "__esModule", {
  */
 
 var cardFilter = exports.cardFilter = function cardFilter(state, action) {
-  // console.log(action);
+  console.log('red card filter');
   switch (action.type) {
     case 'FILTER_CARDS':
       return action.data;
@@ -63084,7 +63114,19 @@ var cardFilter = exports.cardFilter = function cardFilter(state, action) {
   }
 };
 
+var orderCard = exports.orderCard = function orderCard(state, action) {
+  console.log(action);
+  console.log('red order card');
+  switch (action.type) {
+    case 'ORDER_CARDS_BY_NUMBER':
+      return action.data;
+    default:
+      return state || '';
+  }
+};
+
 var cards = exports.cards = function cards(state, action) {
+  console.log('red cards');
   var newCard = {};
   var max = Math.pow(10, 16);
   var min = Math.pow(10, 15);
@@ -63166,16 +63208,17 @@ reducers.routing = _reactRouterRedux.routerReducer; /**
                                                      * Created by bursak on 11/29/16.
                                                      */
 
+var _JSON$parse = JSON.parse(_lockr2.default.get('save') || '[]'),
+    cards = _JSON$parse.cards,
+    cardFilter = _JSON$parse.cardFilter,
+    orderCard = _JSON$parse.orderCard;
 
-var storage = JSON.parse(_lockr2.default.get('state') || '[]');
-var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers), { 'cards': storage }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers), { cards: cards, cardFilter: cardFilter, orderCard: orderCard }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 
 function init() {
   var state = store.getState();
-  _lockr2.default.set('state', JSON.stringify(state.cards));
-  console.log(state);
-
+  _lockr2.default.set('save', JSON.stringify({ cards: state.cards, cardFilter: state.cardFilter, orderCard: state.orderCard }));
   _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
