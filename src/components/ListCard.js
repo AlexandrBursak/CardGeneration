@@ -8,20 +8,19 @@ import fuzzysearch from 'fuzzysearch'
 import CardInList from './CardInList';
 
 const matches = ( filter, card ) => fuzzysearch(filter, card.number);
-const sortByNumber = ( a, b, sortType ) => {
-  // console.log(this);
-  // console.log(sortType);
-  // return this;
-  a = a.number.replace(/([\s-_]+)/g, '');
-  b = b.number.replace(/([\s-_]+)/g, '');
+const sortByType = ( a, b, sortType ) => {
+  a = a.replace(/([\s-_]+)/g, '');
+  b = b.replace(/([\s-_]+)/g, '');
   return ( 'ASC' == sortType ) ? a - b : b - a;
 };
-const sortByType = [ '', 'ASC', 'DESC' ];
+
+const orderBySMTH = ( cards, name, sortType ) => {
+  return sortType ? cards.sort( (a, b) => sortByType( a[name], b[name], sortType ) ) : cards;
+};
+const listTypeOfSort = [ '', 'ASC', 'DESC' ];
 
 const mapStateToProps = ({ cards, cardFilter, orderCard }) => ({
-  cards: cards.filter(c => matches(cardFilter, c)).sort((a, b) => {
-    return orderCard ? sortByNumber( a, b, orderCard ) : 0;
-  }),
+  cards: orderBySMTH( cards.filter(c => matches(cardFilter, c)), 'number', orderCard ),
   cardFilter,
   orderCard
 });
@@ -64,7 +63,7 @@ const ListCard = React.createClass({
         <table className="table">
           <thead>
           <tr>
-            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( getNextOrderBy( props.orderCard, sortByType ) ) }> Number {orderCard} </button> </th>
+            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( getNextOrderBy( props.orderCard, listTypeOfSort ) ) }> Number {orderCard} </button> </th>
             <th> Exp </th>
             <th> Status </th>
             <th> Action </th>

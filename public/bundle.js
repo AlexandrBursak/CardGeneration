@@ -62849,26 +62849,27 @@ var matches = function matches(filter, card) {
     * Created by bursak on 11/25/16.
     */
 
-var sortByNumber = function sortByNumber(a, b, sortType) {
-  // console.log(this);
-  // console.log(sortType);
-  // return this;
-  a = a.number.replace(/([\s-_]+)/g, '');
-  b = b.number.replace(/([\s-_]+)/g, '');
+var sortByType = function sortByType(a, b, sortType) {
+  a = a.replace(/([\s-_]+)/g, '');
+  b = b.replace(/([\s-_]+)/g, '');
   return 'ASC' == sortType ? a - b : b - a;
 };
-var sortByType = ['', 'ASC', 'DESC'];
+
+var orderBySMTH = function orderBySMTH(cards, name, sortType) {
+  return sortType ? cards.sort(function (a, b) {
+    return sortByType(a[name], b[name], sortType);
+  }) : cards;
+};
+var listTypeOfSort = ['', 'ASC', 'DESC'];
 
 var mapStateToProps = function mapStateToProps(_ref) {
   var cards = _ref.cards,
       cardFilter = _ref.cardFilter,
       orderCard = _ref.orderCard;
   return {
-    cards: cards.filter(function (c) {
+    cards: orderBySMTH(cards.filter(function (c) {
       return matches(cardFilter, c);
-    }).sort(function (a, b) {
-      return orderCard ? sortByNumber(a, b, orderCard) : 0;
-    }),
+    }), 'number', orderCard),
     cardFilter: cardFilter,
     orderCard: orderCard
   };
@@ -62944,7 +62945,7 @@ var ListCard = _react2.default.createClass({
                 _react2.default.createElement(
                   'button',
                   { className: 'btn btn-sm', onClick: function onClick() {
-                      return props.onOrder(getNextOrderBy(props.orderCard, sortByType));
+                      return props.onOrder(getNextOrderBy(props.orderCard, listTypeOfSort));
                     } },
                   ' Number ',
                   orderCard,
