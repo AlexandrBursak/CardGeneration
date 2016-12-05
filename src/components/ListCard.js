@@ -43,7 +43,7 @@ const ListCard = React.createClass({
     let orderCard = props.orderCard.length
       ? (props.orderCard == 'ASC'
         ? <span className="glyphicon glyphicon-arrow-up"></span>
-        : <span className="glyphicon glyphicon-arrow-down"></span>)
+        : <span className="glyphicon glyphicon-arrow-down"></span>1111111)
       : '';
     let getNextOrderBy = ( current, allList ) => {
       let result = (allList.indexOf( current ) + 1 < allList.length) ? allList[allList.indexOf( current ) + 1] : allList[0];
