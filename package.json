@@ -23,7 +23,9 @@
     "redux-promise": "^0.5.3",
     "watchify": "^3.7.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "redux-devtools": "^3.3.1"
+  },
   "scripts": {
     "build": "watchify src/router.js -o public/bundle.js -t [ babelify --presets [ react es2015 ] ]",
     "server": "cd public; live-server --port=1234 --entry-file=index.html"
