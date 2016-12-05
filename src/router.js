@@ -18,7 +18,6 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 function init() {
   let state = store.getState();
-  console.log(state);
   Lockr.set('save', JSON.stringify( { cards: state.cards, cardFilter: state.cardFilter, orderCard: state.orderCard } ));
   ReactDOM.render(<Provider store={store}>
     <Router history={history}>

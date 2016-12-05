@@ -20,7 +20,7 @@ const orderBySMTH = ( cards, name, sortType ) => {
 const listTypeOfSort = [ '', 'ASC', 'DESC' ];
 
 const mapStateToProps = ({ cards, cardFilter, orderCard }) => ({
-  cards: orderBySMTH( cards.filter(c => matches(cardFilter, c)), orderCard[0], orderCard[1] ),
+  cards: orderBySMTH( cards.filter(c => matches(cardFilter, c)), 'number', orderCard ),
   cardFilter,
   orderCard
 });
@@ -63,9 +63,9 @@ const ListCard = React.createClass({
         <table className="table">
           <thead>
           <tr>
-            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( getNextOrderBy( props.orderCard[1], listTypeOfSort ) ) }> Number {props.orderCard[0]=='number' ? orderCard : ''} </button> </th>
+            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( getNextOrderBy( props.orderCard, listTypeOfSort ) ) }> Number {orderCard} </button> </th>
             <th> Exp </th>
-            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( getNextOrderBy( props.orderCard[1], listTypeOfSort ) ) }> Status {props.orderCard[0]=='status' ? orderCard : ''} </button> </th>
+            <th> Status </th>
             <th> Action </th>
           </tr>
           </thead>
