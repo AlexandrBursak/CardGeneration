@@ -9,18 +9,18 @@ import CardInList from './CardInList';
 
 const matches = ( filter, card ) => fuzzysearch(filter, card.number);
 const sortByType = ( a, b, sortType ) => {
-  a = a.replace(/([\s-_]+)/g, '');
-  b = b.replace(/([\s-_]+)/g, '');
+  a = a.toString().replace(/([\s-_]+)/g, '');
+  b = b.toString().replace(/([\s-_]+)/g, '');
   return ( 'ASC' == sortType ) ? a - b : b - a;
 };
 
 const orderBySMTH = ( cards, name, sortType ) => {
   return sortType ? cards.sort( (a, b) => sortByType( a[name], b[name], sortType ) ) : cards;
 };
-const listTypeOfSort = [ '', 'ASC', 'DESC' ];
+const listTypeOfSort = [ 'ASC', 'DESC', '' ];
 
 const mapStateToProps = ({ cards, cardFilter, orderCard }) => ({
-  cards: orderBySMTH( cards.filter(c => matches(cardFilter, c)), 'number', orderCard ),
+  cards: orderBySMTH( cards.filter(c => matches(cardFilter, c)), orderCard[1], orderCard[0] ),
   cardFilter,
   orderCard
 });
@@ -40,14 +40,13 @@ const ListCard = React.createClass({
   render() {
     let props = this.props;
     console.log(props);
-    let orderCard = props.orderCard.length
-      ? (props.orderCard == 'ASC'
+    let orderCard = props.orderCard[0].length
+      ? (props.orderCard[0] == 'ASC'
         ? <span className="glyphicon glyphicon-arrow-up"></span>
-        : <span className="glyphicon glyphicon-arrow-down"></span>1111111)
+        : <span className="glyphicon glyphicon-arrow-down"></span>)
       : '';
     let getNextOrderBy = ( current, allList ) => {
-      let result = (allList.indexOf( current ) + 1 < allList.length) ? allList[allList.indexOf( current ) + 1] : allList[0];
-      return result;
+      return (allList.indexOf( current ) + 1 < allList.length) ? allList[allList.indexOf( current ) + 1] : allList[0];
     };
     return (<div className="jumbotron row">
       <div className="list-card">
@@ -63,9 +62,9 @@ const ListCard = React.createClass({
         <table className="table">
           <thead>
           <tr>
-            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( getNextOrderBy( props.orderCard, listTypeOfSort ) ) }> Number {orderCard} </button> </th>
+            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( [ getNextOrderBy( props.orderCard[0], listTypeOfSort ), 'number' ] ) }> Number {props.orderCard[1]=='number' ? orderCard : ''} </button> </th>
             <th> Exp </th>
-            <th> Status </th>
+            <th> <button className="btn btn-sm" onClick={ () => props.onOrder( [ getNextOrderBy( props.orderCard[0], listTypeOfSort ), 'status' ] ) }> Status {props.orderCard[1]=='status' ? orderCard : ''} </button> </th>
             <th> Action </th>
           </tr>
           </thead>
