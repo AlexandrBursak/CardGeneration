@@ -62869,7 +62869,7 @@ var mapStateToProps = function mapStateToProps(_ref) {
   return {
     cards: orderBySMTH(cards.filter(function (c) {
       return matches(cardFilter, c);
-    }), 'number', orderCard),
+    }), orderCard[0], orderCard[1]),
     cardFilter: cardFilter,
     orderCard: orderCard
   };
@@ -62945,10 +62945,10 @@ var ListCard = _react2.default.createClass({
                 _react2.default.createElement(
                   'button',
                   { className: 'btn btn-sm', onClick: function onClick() {
-                      return props.onOrder(getNextOrderBy(props.orderCard, listTypeOfSort));
+                      return props.onOrder(getNextOrderBy(props.orderCard[1], listTypeOfSort));
                     } },
                   ' Number ',
-                  orderCard,
+                  props.orderCard[0] == 'number' ? orderCard : '',
                   ' '
                 ),
                 ' '
@@ -62961,7 +62961,17 @@ var ListCard = _react2.default.createClass({
               _react2.default.createElement(
                 'th',
                 null,
-                ' Status '
+                ' ',
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn btn-sm', onClick: function onClick() {
+                      return props.onOrder(getNextOrderBy(props.orderCard[1], listTypeOfSort));
+                    } },
+                  ' Status ',
+                  props.orderCard[0] == 'status' ? orderCard : '',
+                  ' '
+                ),
+                ' '
               ),
               _react2.default.createElement(
                 'th',
@@ -63219,6 +63229,7 @@ var history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHi
 
 function init() {
   var state = store.getState();
+  console.log(state);
   _lockr2.default.set('save', JSON.stringify({ cards: state.cards, cardFilter: state.cardFilter, orderCard: state.orderCard }));
   _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
