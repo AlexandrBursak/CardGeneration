@@ -5,7 +5,7 @@ import React from 'react';
 
 const Header = () => {
   return (<header className="page-header">
-      <h1> Card generation System </h1>
+      <h1> Card generation System v0.1 </h1>
     </header>);
 };
 

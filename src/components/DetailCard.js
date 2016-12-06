@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import ListStatus from './ListStatus';
+import ListStatus from '../constants/ListStatus';
 import { Link } from 'react-router';
 
 

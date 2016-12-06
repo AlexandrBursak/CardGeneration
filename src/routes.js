@@ -4,7 +4,7 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
-import CardApp from './app';
+import CardApp from './containers/app';
 import NewCard from './components/NewCard';
 import DetailCard from './components/DetailCard';
 import ListCard from './components/ListCard';

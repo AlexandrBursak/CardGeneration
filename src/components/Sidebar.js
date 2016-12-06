@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import { connect } from 'react-redux';
-import { autoAddCard } from '../action';
+import { autoAddCard } from '../actions/action';
 import { Link } from 'react-router'
 
 const mapDispatchToProps = dispatch => ({

@@ -9,7 +9,7 @@ import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import Routes from './routes';
-import * as reducers from './reducers';
+import * as reducers from './reducers/reducers';
 reducers.routing = routerReducer;
 
 let { cards, cardFilter, orderCard } = JSON.parse(Lockr.get('save') || '[]');

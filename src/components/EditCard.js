@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { editCard } from '../action';
+import { editCard } from '../actions/action';
 import CardForm from './CardForm';
 
 const mapStateToProps = ({ cards }, { params: { cardId } }) => ({

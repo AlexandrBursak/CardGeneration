@@ -4,7 +4,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link, browserHistory } from 'react-router';
-import ListStatus from './ListStatus';
+import ListStatus from '../constants/ListStatus';
 import _ from 'lodash';
 
 const FormCard = React.createClass({
@@ -43,14 +43,14 @@ const FormCard = React.createClass({
           <div className="col-xs-12">
             <Link to={`/card/`}> Cancel </Link>
             { addCard
-              ? <button className="btn" onClick={this.addCard}> Add Card</button>
-              : <button className="btn" onClick={this.editCard}> Update Card</button>
+              ? <button className="btn" onClick={this.onAddCard}> Add Card</button>
+              : <button className="btn" onClick={this.onEditCard}> Update Card</button>
             }
           </div>
         </form>
       </div>);
   },
-  addCard(ev) {
+  onAddCard(ev) {
     ev.preventDefault();
     this.props.addCard(Object.assign({}, this.props.card, {
       number: ReactDOM.findDOMNode(this.refs.number).value,
@@ -60,7 +60,7 @@ const FormCard = React.createClass({
     }));
     browserHistory.push(`/card`);
   },
-  editCard(ev) {
+  onEditCard(ev) {
     ev.preventDefault();
     this.props.editCard(Object.assign({}, this.props.card, {
       number: ReactDOM.findDOMNode(this.refs.number).value,

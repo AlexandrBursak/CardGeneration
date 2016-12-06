@@ -3,9 +3,9 @@
  */
 import React from 'react';
 import { Link } from 'react-router';
-import ListStatus from './ListStatus';
+import ListStatus from '../constants/ListStatus';
 import { connect } from 'react-redux';
-import { deleteCard } from '../action';
+import { deleteCard } from '../actions/action';
 
 import Dialog from 'react-bootstrap-dialog'
 

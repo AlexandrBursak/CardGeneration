@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { filterByCardNumber, orderCardsByNumber } from '../action';
+import { filterByCardNumber, orderCardsByNumber } from '../actions/action';
 import fuzzysearch from 'fuzzysearch'
 import CardInList from './CardInList';
 
