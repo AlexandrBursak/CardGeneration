@@ -8,9 +8,18 @@ import { createStore, combineReducers } from 'redux'
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import { Provider } from 'react-redux';
-import Routes from './routes';
-import * as reducers from './reducers/reducers';
-reducers.routing = routerReducer;
+import Routes from './routes/routes';
+import * as orderCardReducers from './reducers/orderCard';
+import * as cardFilterReducers from './reducers/cardFilter';
+import * as cardsReducers from './reducers/cards';
+let reducers = {
+  cards: cardsReducers.cards,
+  orderCard: orderCardReducers.orderCard,
+  cardFilter: cardFilterReducers.cardFilter,
+  routing: routerReducer
+};
+
+console.log(reducers);
 
 let { cards, cardFilter, orderCard } = JSON.parse(Lockr.get('save') || '[]');
 const store = createStore(combineReducers(reducers), { cards, cardFilter, orderCard }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

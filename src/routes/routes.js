@@ -4,11 +4,11 @@
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
-import CardApp from './containers/app';
-import NewCard from './components/NewCard';
-import DetailCard from './components/DetailCard';
-import ListCard from './components/ListCard';
-import EditCard from './components/EditCard';
+import CardApp from '../containers/app';
+import NewCard from '../components/NewCard';
+import DetailCard from '../components/DetailCard';
+import ListCard from '../components/ListCard';
+import EditCard from '../components/EditCard';
 
 export default (<Route path='/' component={CardApp}>
   <Route path='card'>

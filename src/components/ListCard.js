@@ -40,7 +40,7 @@ const ListCard = React.createClass({
   render() {
     let props = this.props;
     console.log(props);
-    let orderCard = props.orderCard[0].length
+    let orderCard = props.orderCard.length && props.orderCard[0].length
       ? (props.orderCard[0] == 'ASC'
         ? <span className="glyphicon glyphicon-arrow-up"></span>
         : <span className="glyphicon glyphicon-arrow-down"></span>)

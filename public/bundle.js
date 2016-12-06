@@ -66,21 +66,37 @@
 	
 	var _reactRedux = __webpack_require__(260);
 	
-	var _routes = __webpack_require__(267);
+	var _routes = __webpack_require__(541);
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _reducers = __webpack_require__(540);
+	var _orderCard = __webpack_require__(545);
 	
-	var reducers = _interopRequireWildcard(_reducers);
+	var orderCardReducers = _interopRequireWildcard(_orderCard);
+	
+	var _cardFilter = __webpack_require__(546);
+	
+	var cardFilterReducers = _interopRequireWildcard(_cardFilter);
+	
+	var _cards = __webpack_require__(544);
+	
+	var cardsReducers = _interopRequireWildcard(_cards);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	reducers.routing = _reactRouterRedux.routerReducer; /**
-	                                                     * Created by bursak on 11/29/16.
-	                                                     */
+	var reducers = {
+	  cards: cardsReducers.cards,
+	  orderCard: orderCardReducers.orderCard,
+	  cardFilter: cardFilterReducers.cardFilter,
+	  routing: _reactRouterRedux.routerReducer
+	}; /**
+	    * Created by bursak on 11/29/16.
+	    */
+	
+	
+	console.log(reducers);
 	
 	var _JSON$parse = JSON.parse(_lockr2.default.get('save') || '[]'),
 	    cards = _JSON$parse.cards,
@@ -28595,63 +28611,7 @@
 	}
 
 /***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(200);
-	
-	var _app = __webpack_require__(268);
-	
-	var _app2 = _interopRequireDefault(_app);
-	
-	var _NewCard = __webpack_require__(272);
-	
-	var _NewCard2 = _interopRequireDefault(_NewCard);
-	
-	var _DetailCard = __webpack_require__(276);
-	
-	var _DetailCard2 = _interopRequireDefault(_DetailCard);
-	
-	var _ListCard = __webpack_require__(277);
-	
-	var _ListCard2 = _interopRequireDefault(_ListCard);
-	
-	var _EditCard = __webpack_require__(539);
-	
-	var _EditCard2 = _interopRequireDefault(_EditCard);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = _react2.default.createElement(
-	  _reactRouter.Route,
-	  { path: '/', component: _app2.default },
-	  _react2.default.createElement(
-	    _reactRouter.Route,
-	    { path: 'card' },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _ListCard2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'new', component: _NewCard2.default }),
-	    _react2.default.createElement(
-	      _reactRouter.Route,
-	      { path: ':cardId' },
-	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _DetailCard2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: 'edit', component: _EditCard2.default })
-	    )
-	  )
-	); /**
-	    * Created by bursak on 11/29/16.
-	    */
-
-/***/ },
+/* 267 */,
 /* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28816,7 +28776,7 @@
 	};
 	
 	var orderCardsByNumber = exports.orderCardsByNumber = function orderCardsByNumber(orderBy) {
-	  return { type: 'ORDER_CARDS_BY_NUMBER', data: orderBy };
+	  return { type: 'ORDER_CARDS_BY_SMTH', data: orderBy };
 	};
 
 /***/ },
@@ -46266,7 +46226,7 @@
 	  render: function render() {
 	    var props = this.props;
 	    console.log(props);
-	    var orderCard = props.orderCard[0].length ? props.orderCard[0] == 'ASC' ? _react2.default.createElement('span', { className: 'glyphicon glyphicon-arrow-up' }) : _react2.default.createElement('span', { className: 'glyphicon glyphicon-arrow-down' }) : '';
+	    var orderCard = props.orderCard.length && props.orderCard[0].length ? props.orderCard[0] == 'ASC' ? _react2.default.createElement('span', { className: 'glyphicon glyphicon-arrow-up' }) : _react2.default.createElement('span', { className: 'glyphicon glyphicon-arrow-down' }) : '';
 	    var getNextOrderBy = function getNextOrderBy(current, allList) {
 	      return allList.indexOf(current) + 1 < allList.length ? allList[allList.indexOf(current) + 1] : allList[0];
 	    };
@@ -65633,7 +65593,67 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_CardForm2.default);
 
 /***/ },
-/* 540 */
+/* 540 */,
+/* 541 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(200);
+	
+	var _app = __webpack_require__(268);
+	
+	var _app2 = _interopRequireDefault(_app);
+	
+	var _NewCard = __webpack_require__(272);
+	
+	var _NewCard2 = _interopRequireDefault(_NewCard);
+	
+	var _DetailCard = __webpack_require__(276);
+	
+	var _DetailCard2 = _interopRequireDefault(_DetailCard);
+	
+	var _ListCard = __webpack_require__(277);
+	
+	var _ListCard2 = _interopRequireDefault(_ListCard);
+	
+	var _EditCard = __webpack_require__(539);
+	
+	var _EditCard2 = _interopRequireDefault(_EditCard);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = _react2.default.createElement(
+	  _reactRouter.Route,
+	  { path: '/', component: _app2.default },
+	  _react2.default.createElement(
+	    _reactRouter.Route,
+	    { path: 'card' },
+	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _ListCard2.default }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'new', component: _NewCard2.default }),
+	    _react2.default.createElement(
+	      _reactRouter.Route,
+	      { path: ':cardId' },
+	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _DetailCard2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: 'edit', component: _EditCard2.default })
+	    )
+	  )
+	); /**
+	    * Created by bursak on 11/29/16.
+	    */
+
+/***/ },
+/* 542 */,
+/* 543 */,
+/* 544 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -65642,29 +65662,8 @@
 	  value: true
 	});
 	/**
-	 * Created by bursak on 11/24/16.
+	 * Created by bursak on 12/6/16.
 	 */
-	
-	var cardFilter = exports.cardFilter = function cardFilter(state, action) {
-	  // console.log('red card filter');
-	  switch (action.type) {
-	    case 'FILTER_CARDS':
-	      return action.data;
-	    default:
-	      return state || [];
-	  }
-	};
-	
-	var orderCard = exports.orderCard = function orderCard(state, action) {
-	  // console.log(action);
-	  // console.log('red order card');
-	  switch (action.type) {
-	    case 'ORDER_CARDS_BY_NUMBER':
-	      return action.data;
-	    default:
-	      return state || '';
-	  }
-	};
 	
 	var cards = exports.cards = function cards(state, action) {
 	  // console.log('red cards');
@@ -65705,6 +65704,53 @@
 	      return state.filter(function (card) {
 	        return card.id !== action.data;
 	      });
+	    default:
+	      return state || [];
+	  }
+	};
+
+/***/ },
+/* 545 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Created by bursak on 12/6/16.
+	 */
+	
+	var orderCard = exports.orderCard = function orderCard(state, action) {
+	  // console.log(action);
+	  // console.log('red order card');
+	  switch (action.type) {
+	    case 'ORDER_CARDS_BY_SMTH':
+	      return action.data;
+	    default:
+	      return state || ['', ''];
+	  }
+	};
+
+/***/ },
+/* 546 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Created by bursak on 12/6/16.
+	 */
+	
+	var cardFilter = exports.cardFilter = function cardFilter(state, action) {
+	  // console.log('red card filter');
+	  switch (action.type) {
+	    case 'FILTER_CARDS':
+	      return action.data;
 	    default:
 	      return state || [];
 	  }

@@ -10,4 +10,4 @@ export const deleteCard = cardId => ({ type: 'DELETE_CARD', data: cardId });
 
 export const filterByCardNumber = query => ({ type: 'FILTER_CARDS', data: query });
 
-export const orderCardsByNumber = orderBy => ({ type: 'ORDER_CARDS_BY_NUMBER', data: orderBy });
+export const orderCardsByNumber = orderBy => ({ type: 'ORDER_CARDS_BY_SMTH', data: orderBy });
