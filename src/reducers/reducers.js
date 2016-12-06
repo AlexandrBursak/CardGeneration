@@ -3,7 +3,7 @@
  */
 
 export const cardFilter = ( state, action ) => {
-  console.log('red card filter');
+  // console.log('red card filter');
   switch (action.type) {
     case 'FILTER_CARDS':
       return action.data;
@@ -13,8 +13,8 @@ export const cardFilter = ( state, action ) => {
 };
 
 export const orderCard = ( state, action ) => {
-  console.log(action);
-  console.log('red order card');
+  // console.log(action);
+  // console.log('red order card');
   switch (action.type) {
     case 'ORDER_CARDS_BY_NUMBER':
       return action.data;
@@ -24,7 +24,7 @@ export const orderCard = ( state, action ) => {
 };
 
 export const cards = ( state, action ) => {
-  console.log('red cards');
+  // console.log('red cards');
   let newCard = {};
   let max = Math.pow( 10, 16 );
   let min = Math.pow( 10, 15 );
@@ -48,7 +48,7 @@ export const cards = ( state, action ) => {
       };
       return state.concat([newCard]);
     case 'EDIT_CARD':
-      console.log(action);
+      // console.log(action);
       var updateCard = {
         number: action.data.number.toString().replace(/([\s-_]+)/g, '').trim(),
         exp_date: action.data.exp_1 + '/' + action.data.exp_2,

@@ -65646,7 +65646,7 @@
 	 */
 	
 	var cardFilter = exports.cardFilter = function cardFilter(state, action) {
-	  console.log('red card filter');
+	  // console.log('red card filter');
 	  switch (action.type) {
 	    case 'FILTER_CARDS':
 	      return action.data;
@@ -65656,8 +65656,8 @@
 	};
 	
 	var orderCard = exports.orderCard = function orderCard(state, action) {
-	  console.log(action);
-	  console.log('red order card');
+	  // console.log(action);
+	  // console.log('red order card');
 	  switch (action.type) {
 	    case 'ORDER_CARDS_BY_NUMBER':
 	      return action.data;
@@ -65667,7 +65667,7 @@
 	};
 	
 	var cards = exports.cards = function cards(state, action) {
-	  console.log('red cards');
+	  // console.log('red cards');
 	  var newCard = {};
 	  var max = Math.pow(10, 16);
 	  var min = Math.pow(10, 15);
@@ -65691,7 +65691,7 @@
 	      };
 	      return state.concat([newCard]);
 	    case 'EDIT_CARD':
-	      console.log(action);
+	      // console.log(action);
 	      var updateCard = {
 	        number: action.data.number.toString().replace(/([\s-_]+)/g, '').trim(),
 	        exp_date: action.data.exp_1 + '/' + action.data.exp_2,
